@@ -33,11 +33,6 @@
         table {
             background-color: #ffffff;
         }
-        .badge-stock {
-            background-color: #e5dccb;
-            color: #4a453e;
-            font-size: 0.95rem;
-        }
     </style>
 </head>
 <body>
@@ -51,88 +46,79 @@
     <div class="container my-4">
         <div class="row mb-4">
             <div class="col-md-12 text-center">
-                <h2>Sistema de Control de Inventario y Despachos</h2>
-                <p class="text-muted">Control de existencias y registro de entregas por persona</p>
+                <h2>Control de Inventario y Entregas</h2>
+                <p class="text-muted">Gestión de stock y registro de entregas por persona</p>
             </div>
         </div>
 
-        <!-- Apartado de Existencias (Resumen de Totales) -->
+        <!-- SECCIÓN 1: Cuántos hay (Resumen de existencias) -->
         <div class="card p-4 mb-4">
-            <h4 class="mb-3 text-secondary">Resumen de Existencias Disponibles</h4>
-            <div id="summaryContainer" class="d-flex flex-wrap gap-2">
-                <!-- Se genera dinámicamente cuántos jabones, aceites, etc., quedan -->
+            <h4 class="mb-3 text-secondary">📦 Resumen: ¿Cuánto hay en existencia?</h4>
+            <div id="stockSummary" class="d-flex flex-wrap gap-2">
+                <!-- Se llena automáticamente -->
             </div>
         </div>
 
-        <!-- Formulario de Registro / Añadir Producto -->
+        <!-- SECCIÓN 2: Agregar Producto o Registrar Entrega -->
         <div class="card p-4 mb-4">
-            <h4 class="mb-3 text-secondary">Registrar / Agregar Producto</h4>
-            <form id="productForm" class="row g-3">
-                <input type="hidden" id="editIndex" value="-1">
+            <h4 class="mb-3 text-secondary">➕ Registrar Producto / Nuevo Stock</h4>
+            <form id="addForm" class="row g-3">
                 <div class="col-md-4">
-                    <label for="prodName" class="form-label">Nombre del Producto</label>
-                    <input type="text" class="form-control" id="prodName" placeholder="Ej. Jabón, Arroz, Aceite" required>
+                    <label class="form-label">Nombre del Producto</label>
+                    <input type="text" class="form-control" id="addName" placeholder="Ej. Jabón, Cloro, Harina" required>
                 </div>
                 <div class="col-md-3">
-                    <label for="prodCategory" class="form-label">Categoría</label>
-                    <input type="text" class="form-control" id="prodCategory" placeholder="Ej. Limpieza, Víveres" required>
+                    <label class="form-label">Cantidad a Agregar</label>
+                    <input type="number" class="form-control" id="addQty" min="1" value="1" required>
                 </div>
-                <div class="col-md-2">
-                    <label for="prodStock" class="form-label">Cantidad Stock</label>
-                    <input type="number" class="form-control" id="prodStock" min="0" required>
-                </div>
-                <div class="col-md-3 d-flex align-items-end">
-                    <button type="submit" class="btn btn-custom w-100" id="btnSave">Guardar Producto</button>
+                <div class="col-md-5 d-flex align-items-end">
+                    <button type="submit" class="btn btn-custom w-100">Guardar / Sumar al Inventario</button>
                 </div>
             </form>
         </div>
 
-        <!-- Buscador -->
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <input type="text" id="searchInput" class="form-control" placeholder="Buscar producto por nombre o categoría...">
-            </div>
-        </div>
-
-        <!-- Tabla de Inventario Actual -->
+        <!-- SECCIÓN 3: Inventario Actual (con botón de restar / entregar) -->
         <div class="card p-4 mb-4">
-            <h4 class="mb-3 text-secondary">Inventario en Almacén</h4>
+            <h4 class="mb-3 text-secondary">📋 Lista General de Productos</h4>
             <div class="table-responsive">
                 <table class="table table-hover align-middle">
                     <thead>
                         <tr>
                             <th>Producto</th>
-                            <th>Categoría</th>
-                            <th>Stock Disponible</th>
-                            <th>Acciones de Descuento / Gestión</th>
+                            <th>Cantidad Disponible (Quedan)</th>
+                            <th>Acciones (Entregar / Restar)</th>
                         </tr>
                     </thead>
-                    <tbody id="inventoryTableBody"></tbody>
+                    <tbody id="inventoryTable">
+                        <!-- Se llena automáticamente -->
+                    </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- Historial de Entregas -->
+        <!-- SECCIÓN 4: Lista abajo de las personas que se lo llevaron -->
         <div class="card p-4">
-            <h4 class="mb-3 text-secondary">Historial de Productos Entregados</h4>
+            <h4 class="mb-3 text-secondary">📝 Historial: Personas que retiraron productos</h4>
             <div class="table-responsive">
                 <table class="table table-striped align-middle">
                     <thead>
                         <tr>
                             <th>Fecha y Hora</th>
-                            <th>Persona que Recibió</th>
+                            <th>Persona que se lo llevó</th>
                             <th>Producto</th>
                             <th>Cantidad Entregada</th>
                         </tr>
                     </thead>
-                    <tbody id="historyTableBody"></tbody>
+                    <tbody id="historyTable">
+                        <!-- Se llena automáticamente -->
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!-- Modal para Registrar Salida / Entrega con Nombre -->
-    <div class="modal fade" id="dispatchModal" tabindex="-1">
+    <!-- Modal para preguntar la persona al entregar -->
+    <div class="modal fade" id="deliverModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content" style="background-color: #fdfbf7;">
                 <div class="modal-header">
@@ -140,20 +126,20 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" id="dispatchIndex">
-                    <p id="dispatchProductName" class="fw-bold fs-5"></p>
+                    <input type="hidden" id="deliverIndex">
+                    <p id="deliverProductTitle" class="fw-bold"></p>
                     <div class="mb-3">
-                        <label for="personName" class="form-label">Nombre de la persona que recibe:</label>
-                        <input type="text" class="form-control" id="personName" placeholder="Escriba el nombre completo" required>
+                        <label class="form-label">Nombre de la persona que se lo lleva:</label>
+                        <input type="text" class="form-control" id="personNameInput" placeholder="Nombre completo" required>
                     </div>
                     <div class="mb-3">
-                        <label for="dispatchQty" class="form-label">Cantidad a entregar:</label>
-                        <input type="number" class="form-control" id="dispatchQty" min="1" value="1" required>
+                        <label class="form-label">Cantidad que se le entrega:</label>
+                        <input type="number" class="form-control" id="deliverQtyInput" min="1" value="1" required>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-custom" onclick="confirmDispatch()">Confirmar Entrega</button>
+                    <button type="button" class="btn btn-custom" onclick="confirmDelivery()">Confirmar Entrega</button>
                 </div>
             </div>
         </div>
@@ -161,40 +147,36 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        let inventory = JSON.parse(localStorage.getItem('inv_victoria_data')) || [];
-        let historyLog = JSON.parse(localStorage.getItem('inv_victoria_history')) || [];
-        let activeModal = null;
+        // Cargar datos guardados o iniciar vacíos
+        let inventory = JSON.parse(localStorage.getItem('victoria_inv')) || [];
+        let historyList = JSON.parse(localStorage.getItem('victoria_history')) || [];
+        let modalInstance = null;
 
         document.addEventListener('DOMContentLoaded', () => {
             renderAll();
-            
-            document.getElementById('productForm').addEventListener('submit', function(e) {
+
+            // Agregar o sumar stock de un producto
+            document.getElementById('addForm').addEventListener('submit', function(e) {
                 e.preventDefault();
-                const name = document.getElementById('prodName').value.trim();
-                const category = document.getElementById('prodCategory').value.trim();
-                const stock = parseInt(document.getElementById('prodStock').value);
-                const editIndex = parseInt(document.getElementById('editIndex').value);
+                const name = document.getElementById('addName').value.trim();
+                const qty = parseInt(document.getElementById('addQty').value);
 
-                if (editIndex === -1) {
-                    inventory.push({ name, category, stock });
+                // Buscar si ya existe el producto para sumarle
+                const existing = inventory.find(item => item.name.toLowerCase() === name.toLowerCase());
+                if (existing) {
+                    existing.stock += qty;
                 } else {
-                    inventory[editIndex] = { name, category, stock };
-                    document.getElementById('editIndex').value = -1;
-                    document.getElementById('btnSave').innerText = 'Guardar Producto';
+                    inventory.push({ name: name, stock: qty });
                 }
-                
-                saveData();
-                this.reset();
-            });
 
-            document.getElementById('searchInput').addEventListener('input', e => {
-                renderInventory(e.target.value.toLowerCase());
+                saveAndRefresh();
+                this.reset();
             });
         });
 
-        function saveData() {
-            localStorage.setItem('inv_victoria_data', JSON.stringify(inventory));
-            localStorage.setItem('inv_victoria_history', JSON.stringify(historyLog));
+        function saveAndRefresh() {
+            localStorage.setItem('victoria_inv', JSON.stringify(inventory));
+            localStorage.setItem('victoria_history', JSON.stringify(historyList));
             renderAll();
         }
 
@@ -204,142 +186,114 @@
             renderHistory();
         }
 
+        // Mostrar cuántos hay arriba
         function renderSummary() {
-            const container = document.getElementById('summaryContainer');
+            const container = document.getElementById('stockSummary');
             container.innerHTML = '';
-            
             if (inventory.length === 0) {
-                container.innerHTML = '<span class="text-muted">No hay productos registrados en el sistema.</span>';
+                container.innerHTML = '<span class="text-muted">No hay productos registrados todavía.</span>';
                 return;
             }
-
             inventory.forEach(item => {
                 container.innerHTML += `
-                    <div class="badge badge-stock p-2 border">
-                        <strong>${item.name}:</strong> ${item.stock} unidad(es)
+                    <div class="border p-2 rounded bg-white shadow-sm">
+                        <strong>${item.name}:</strong> <span class="badge bg-secondary">${item.stock} disponibles</span>
                     </div>`;
             });
         }
 
-        function renderInventory(filter = '') {
-            const tbody = document.getElementById('inventoryTableBody');
+        // Mostrar la tabla general
+        function renderInventory() {
+            const tbody = document.getElementById('inventoryTable');
             tbody.innerHTML = '';
-
             if (inventory.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">No hay productos guardados.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted">Sin productos cargados.</td></tr>';
                 return;
             }
-
             inventory.forEach((item, index) => {
-                if (item.name.toLowerCase().includes(filter) || item.category.toLowerCase().includes(filter)) {
-                    tbody.innerHTML += `
-                        <tr>
-                            <td class="fw-bold">${item.name}</td>
-                            <td><span class="badge bg-light text-dark border">${item.category}</span></td>
-                            <td><span class="fs-6 fw-bold ${item.stock === 0 ? 'text-danger' : 'text-success'}">${item.stock}</span></td>
-                            <td>
-                                <button class="btn btn-sm btn-outline-danger me-1" onclick="quickSubtract(${index})" title="Restar 1">-1 Rápido</button>
-                                <button class="btn btn-sm btn-outline-secondary me-1" onclick="openDispatch(${index})">Entregar a Alguien</button>
-                                <button class="btn btn-sm btn-outline-primary me-1" onclick="editProduct(${index})">Editar</button>
-                                <button class="btn btn-sm btn-outline-danger" onclick="deleteProduct(${index})">Eliminar</button>
-                            </td>
-                        </tr>`;
-                }
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="fw-bold">${item.name}</td>
+                        <td><span class="fs-5 ${item.stock === 0 ? 'text-danger fw-bold' : 'text-success fw-bold'}">${item.stock}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-custom me-2" onclick="openDeliverModal(${index})">Entregar (-)</button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteProduct(${index})">Eliminar</button>
+                        </td>
+                    </tr>`;
             });
         }
 
+        // Mostrar la lista abajo de quién se lo llevó
         function renderHistory() {
-            const tbody = document.getElementById('historyTableBody');
+            const tbody = document.getElementById('historyTable');
             tbody.innerHTML = '';
-
-            if (historyLog.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">Aún no se han realizado entregas.</td></tr>';
+            if (historyList.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">Aún no se ha entregado ningún producto.</td></tr>';
                 return;
             }
-
-            historyLog.forEach(h => {
+            historyList.forEach(h => {
                 tbody.innerHTML += `
                     <tr>
                         <td><small>${h.date}</small></td>
-                        <td class="fw-bold text-capitalize">${h.person}</td>
+                        <td class="fw-bold text-dark">${h.person}</td>
                         <td>${h.product}</td>
                         <td><span class="badge bg-warning text-dark">-${h.qty}</span></td>
                     </tr>`;
             });
         }
 
-        function quickSubtract(index) {
-            if (inventory[index].stock <= 0) {
-                alert('No hay stock disponible para restar.');
+        // Abrir modal de entrega
+        function openDeliverModal(index) {
+            const item = inventory[index];
+            if (item.stock <= 0) {
+                alert('No hay stock disponible de este producto.');
                 return;
             }
-            inventory[index].stock -= 1;
-            
-            historyLog.unshift({
-                date: new Date().toLocaleString(),
-                person: 'Uso Directo / Descuento Rápido',
-                product: inventory[index].name,
-                qty: 1
-            });
+            document.getElementById('deliverIndex').value = index;
+            document.getElementById('deliverProductTitle').innerText = Producto: ${item.name} (Quedan: ${item.stock});
+            document.getElementById('personNameInput').value = '';
+            document.getElementById('deliverQtyInput').value = 1;
+            document.getElementById('deliverQtyInput').max = item.stock;
 
-            saveData();
+            modalInstance = new bootstrap.Modal(document.getElementById('deliverModal'));
+            modalInstance.show();
         }
 
-        function openDispatch(index) {
-            if (inventory[index].stock <= 0) {
-                alert('Este producto no tiene stock disponible.');
-                return;
-            }
-            document.getElementById('dispatchIndex').value = index;
-            document.getElementById('dispatchProductName').innerText = ${inventory[index].name} (Disponible: ${inventory[index].stock});
-            document.getElementById('personName').value = '';
-            document.getElementById('dispatchQty').value = 1;
-            
-            activeModal = new bootstrap.Modal(document.getElementById('dispatchModal'));
-            activeModal.show();
-        }
-
-        function confirmDispatch() {
-            const index = parseInt(document.getElementById('dispatchIndex').value);
-            const person = document.getElementById('personName').value.trim();
-            const qty = parseInt(document.getElementById('dispatchQty').value);
+        // Confirmar la entrega y restar
+        function confirmDelivery() {
+            const index = parseInt(document.getElementById('deliverIndex').value);
+            const person = document.getElementById('personNameInput').value.trim();
+            const qty = parseInt(document.getElementById('deliverQtyInput').value);
 
             if (!person) {
-                alert('Por favor ingrese el nombre de la persona que recibe.');
+                alert('Escribe el nombre de la persona.');
                 return;
             }
-
             if (qty > inventory[index].stock) {
-                alert('La cantidad ingresada supera el stock disponible.');
+                alert('No puedes entregar más de lo que queda en stock.');
                 return;
             }
 
+            // Restar stock
             inventory[index].stock -= qty;
 
-            historyLog.unshift({
+            // Guardar en el historial de abajo
+            historyList.unshift({
                 date: new Date().toLocaleString(),
                 person: person,
                 product: inventory[index].name,
                 qty: qty
             });
 
-            if (activeModal) activeModal.hide();
-            saveData();
+            if (modalInstance) modalInstance.hide();
+            saveAndRefresh();
         }
 
-        function editProduct(index) {
-            document.getElementById('prodName').value = inventory[index].name;
-            document.getElementById('prodCategory').value = inventory[index].category;
-            document.getElementById('prodStock').value = inventory[index].stock;
-            document.getElementById('editIndex').value = index;
-            document.getElementById('btnSave').innerText = 'Actualizar Producto';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
+        // Eliminar producto si se equivocó
         function deleteProduct(index) {
-            if (confirm('¿Está seguro de eliminar este producto del sistema?')) {
+            if (confirm('¿Deseas eliminar este producto de la lista?')) {
                 inventory.splice(index, 1);
-                saveData();
+                saveAndRefresh();
             }
         }
     </script>
