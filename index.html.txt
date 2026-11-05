@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inversiones Bombonshopcolonial</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { 
+            background-color: #0b0b0b; 
+            color: #f3e5ab; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+        }
+        .card { 
+            background-color: #1a1a1a; 
+            border-radius: 12px; 
+            border: 1px solid #d4af37; 
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15); 
+        }
+        .btn-dorado { 
+            background-color: #d4af37; 
+            color: #000000; 
+            font-weight: bold; 
+            border-radius: 8px; 
+            border: none;
+        }
+        .btn-dorado:hover { 
+            background-color: #b38f27; 
+            color: #000000; 
+        }
+        .form-control {
+            background-color: #121212;
+            border: 1px solid #444;
+            color: #fff;
+            border-radius: 8px;
+        }
+        .form-control:focus {
+            background-color: #121212;
+            border-color: #d4af37;
+            color: #fff;
+            box-shadow: 0 0 0 0.25rem rgba(212, 175, 55, 0.25);
+        }
+        .form-control::placeholder {
+            color: #888;
+        }
+        .table {
+            color: #000000;
+            background-color: #1a1a1a;
+        }
+        .table-hover tbody tr:hover { 
+            background-color: #e5e5e5; 
+            color: #000000; 
+        }
+        .table thead {
+            background-color: #121212;
+            color: #000000;
+            border-bottom: 2px solid #d4af37;
+        }
+        .text-gold {
+            color: #d4af37 !important;
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="container" style="max-width: 950px;">
+        <h2 class="mb-4 text-center fw-bold text-gold">✨ Inversiones Bombonshopcolonial ✨</h2>
+        
+        <!-- Buscador -->
+        <div class="card p-3 mb-4">
+            <input type="text" id="buscador" class="form-control" placeholder="🔍 Buscar producto por nombre...">
+        </div>
+
+        <!-- Registro de Productos -->
+        <div class="card p-4 mb-4">
+            <h5 class="fw-semibold mb-3 text-gold">Registrar / Agregar Producto</h5>
+            <form id="formProducto" class="row g-3">
+                <div class="col-md-5">
+                    <input type="text" id="nombreProducto" class="form-control" placeholder="Nombre del producto" required>
+                </div>
+                <div class="col-md-3">
+                    <input type="number" id="cantidadProducto" class="form-control" placeholder="Cantidad inicial" min="1" required>
+                </div>
+                <div class="col-md-2">
+                    <input type="number" id="precioProducto" class="form-control" placeholder="Precio ($)" step="0.01" min="0" required>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-dorado w-100 h-100">Agregar</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Lista de Inventario -->
+        <div class="card p-4">
+            <h5 class="fw-semibold mb-3 text-gold">Lista de Inventario</h5>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th class="text-dark">Producto</th>
+                            <th class="text-center text-dark">Precio Unitario</th>
+                            <th class="text-center text-dark">Stock Disponible</th>
+                            <th class="text-center text-dark">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaInventario">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let inventario = JSON.parse(localStorage.getItem('inventarioBombonshop')) || [];
+
+        function guardarYRenderizar() {
+            localStorage.setItem('inventarioBombonshop', JSON.stringify(inventario));
+            renderTabla(inventario);
+        }
+
+        function renderTabla(datos) {
+            const tabla = document.getElementById('tablaInventario');
+            tabla.innerHTML = '';
+            
+            if (datos.length === 0) {
+                tabla.innerHTML = '<tr><td colspan="4" class="text-center text-muted py-3">No hay productos registrados.</td></tr>';
+                return;
+            }
+
+            datos.forEach((item) => {
+                const indexOriginal = inventario.indexOf(item);
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="fw-bold text-dark">${item.nombre}</td>
+                    <td class="text-center text-dark fw-bold">$${parseFloat(item.precio).toFixed(2)}</td>
+                    <td class="text-center"><span class="badge ${item.cantidad > 0 ? 'bg-success text-white' : 'bg-danger text-white'} fs-6">${item.cantidad} unidades</span></td>
+                    <td class="text-center">
+                        <button class="btn btn-sm btn-outline-warning me-2 text-dark border-dark fw-bold" onclick="vender(${indexOriginal})">🛒 Venta (-1)</button>
+                        <button class="btn btn-sm btn-outline-danger fw-bold" onclick="eliminar(${indexOriginal})">🗑️ Eliminar</button>
+                    </td>
+                `;
+                tabla.appendChild(tr);
+            });
+        }
+
+        document.getElementById('formProducto').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const nombre = document.getElementById('nombreProducto').value.trim();
+            const cantidad = parseInt(document.getElementById('cantidadProducto').value);
+            const precio = parseFloat(document.getElementById('precioProducto').value);
+            
+            inventario.push({ nombre, cantidad, precio });
+            document.getElementById('nombreProducto').value = '';
+            document.getElementById('cantidadProducto').value = '';
+            document.getElementById('precioProducto').value = '';
+            guardarYRenderizar();
+            document.getElementById('buscador').value = '';
+        });
+
+        document.getElementById('buscador').addEventListener('input', (e) => {
+            const texto = e.target.value.toLowerCase();
+            const filtrados = inventario.filter(item => item.nombre.toLowerCase().includes(texto));
+            renderTabla(filtrados);
+        });
+
+        function vender(index) {
+            if (inventario[index].cantidad > 0) {
+                inventario[index].cantidad--;
+                guardarYRenderizar();
+                document.getElementById('buscador').dispatchEvent(new Event('input'));
+            } else {
+                alert('¡Atención! Este producto se ha agotado.');
+            }
+        }
+
+        function eliminar(index) {
+            inventario.splice(index, 1);
+            guardarYRenderizar();
+            document.getElementById('buscador').dispatchEvent(new Event('input'));
+        }
+
+        guardarYRenderizar();
+    </script>
+</body>
+</html>
