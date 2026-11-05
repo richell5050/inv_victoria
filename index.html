@@ -1,18 +1,4 @@
-[9:40 p.m., 4/11/2026] Richell 💗: @"
 <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventario - CEIN Victoria Gamus de Ghetea</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body { background-color: #fdfbf7; color: #4a453e; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .navbar, .card, .btn-primary { background-color: #f4efe6 !important; border-color: #e5dccb !important; color: #4a453e !important; }
-        .btn-custom { background-color: #d4c5b9; color: #fff; border: none; }
-        .btn-custom:hover { background-color: #bfaea1; color: #fff; }
-        .card { box-shadow: 0 4p…
-[9:52 p.m., 4/11/2026] Richell 💗: <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -26,7 +12,7 @@
             color: #4a453e;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        .navbar, .card, .btn-primary {
+        .navbar, .card {
             background-color: #f4efe6 !important;
             border-color: #e5dccb !important;
             color: #4a453e !important;
@@ -47,6 +33,11 @@
         table {
             background-color: #ffffff;
         }
+        .badge-stock {
+            background-color: #e5dccb;
+            color: #4a453e;
+            font-size: 0.95rem;
+        }
     </style>
 </head>
 <body>
@@ -61,43 +52,51 @@
         <div class="row mb-4">
             <div class="col-md-12 text-center">
                 <h2>Sistema de Control de Inventario y Despachos</h2>
-                <p class="text-muted">Gestión de despachos, entradas y existencias de despensa</p>
+                <p class="text-muted">Control de existencias y registro de entregas por persona</p>
             </div>
         </div>
 
-        <!-- Formulario de Registro -->
+        <!-- Apartado de Existencias (Resumen de Totales) -->
+        <div class="card p-4 mb-4">
+            <h4 class="mb-3 text-secondary">Resumen de Existencias Disponibles</h4>
+            <div id="summaryContainer" class="d-flex flex-wrap gap-2">
+                <!-- Se genera dinámicamente cuántos jabones, aceites, etc., quedan -->
+            </div>
+        </div>
+
+        <!-- Formulario de Registro / Añadir Producto -->
         <div class="card p-4 mb-4">
             <h4 class="mb-3 text-secondary">Registrar / Agregar Producto</h4>
             <form id="productForm" class="row g-3">
                 <input type="hidden" id="editIndex" value="-1">
                 <div class="col-md-4">
                     <label for="prodName" class="form-label">Nombre del Producto</label>
-                    <input type="text" class="form-control" id="prodName" required>
+                    <input type="text" class="form-control" id="prodName" placeholder="Ej. Jabón, Arroz, Aceite" required>
                 </div>
                 <div class="col-md-3">
                     <label for="prodCategory" class="form-label">Categoría</label>
-                    <input type="text" class="form-control" id="prodCategory" placeholder="Ej. Víveres, Limpieza" required>
+                    <input type="text" class="form-control" id="prodCategory" placeholder="Ej. Limpieza, Víveres" required>
                 </div>
                 <div class="col-md-2">
                     <label for="prodStock" class="form-label">Cantidad Stock</label>
                     <input type="number" class="form-control" id="prodStock" min="0" required>
                 </div>
                 <div class="col-md-3 d-flex align-items-end">
-                    <button type="submit" class="btn btn-custom w-100">Guardar Producto</button>
+                    <button type="submit" class="btn btn-custom w-100" id="btnSave">Guardar Producto</button>
                 </div>
             </form>
         </div>
 
-        <!-- Búsqueda -->
+        <!-- Buscador -->
         <div class="row mb-3">
             <div class="col-md-6">
-                <input type="text" id="searchInput" class="form-control" placeholder="Buscar producto...">
+                <input type="text" id="searchInput" class="form-control" placeholder="Buscar producto por nombre o categoría...">
             </div>
         </div>
 
-        <!-- Tabla de Inventario -->
+        <!-- Tabla de Inventario Actual -->
         <div class="card p-4 mb-4">
-            <h4 class="mb-3 text-secondary">Inventario Actual</h4>
+            <h4 class="mb-3 text-secondary">Inventario en Almacén</h4>
             <div class="table-responsive">
                 <table class="table table-hover align-middle">
                     <thead>
@@ -105,7 +104,7 @@
                             <th>Producto</th>
                             <th>Categoría</th>
                             <th>Stock Disponible</th>
-                            <th>Acciones</th>
+                            <th>Acciones de Descuento / Gestión</th>
                         </tr>
                     </thead>
                     <tbody id="inventoryTableBody"></tbody>
@@ -113,17 +112,17 @@
             </div>
         </div>
 
-        <!-- Historial -->
+        <!-- Historial de Entregas -->
         <div class="card p-4">
-            <h4 class="mb-3 text-secondary">Historial de Movimientos</h4>
+            <h4 class="mb-3 text-secondary">Historial de Productos Entregados</h4>
             <div class="table-responsive">
-                <table class="table table-sm align-middle">
+                <table class="table table-striped align-middle">
                     <thead>
                         <tr>
-                            <th>Fecha / Hora</th>
+                            <th>Fecha y Hora</th>
+                            <th>Persona que Recibió</th>
                             <th>Producto</th>
-                            <th>Tipo</th>
-                            <th>Cantidad</th>
+                            <th>Cantidad Entregada</th>
                         </tr>
                     </thead>
                     <tbody id="historyTableBody"></tbody>
@@ -132,25 +131,29 @@
         </div>
     </div>
 
-    <!-- Modal Salida -->
+    <!-- Modal para Registrar Salida / Entrega con Nombre -->
     <div class="modal fade" id="dispatchModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content" style="background-color: #fdfbf7;">
                 <div class="modal-header">
-                    <h5 class="modal-title">Registrar Entrega / Salida</h5>
+                    <h5 class="modal-title">Registrar Entrega de Producto</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" id="dispatchIndex">
-                    <p id="dispatchProductName" class="fw-bold"></p>
+                    <p id="dispatchProductName" class="fw-bold fs-5"></p>
                     <div class="mb-3">
-                        <label for="dispatchQty" class="form-label">Cantidad a Retirar</label>
-                        <input type="number" class="form-control" id="dispatchQty" min="1" value="1">
+                        <label for="personName" class="form-label">Nombre de la persona que recibe:</label>
+                        <input type="text" class="form-control" id="personName" placeholder="Escriba el nombre completo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="dispatchQty" class="form-label">Cantidad a entregar:</label>
+                        <input type="number" class="form-control" id="dispatchQty" min="1" value="1" required>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-custom" onclick="confirmDispatch()">Confirmar Salida</button>
+                    <button type="button" class="btn btn-custom" onclick="confirmDispatch()">Confirmar Entrega</button>
                 </div>
             </div>
         </div>
@@ -163,8 +166,8 @@
         let activeModal = null;
 
         document.addEventListener('DOMContentLoaded', () => {
-            renderInventory();
-            renderHistory();
+            renderAll();
+            
             document.getElementById('productForm').addEventListener('submit', function(e) {
                 e.preventDefault();
                 const name = document.getElementById('prodName').value.trim();
@@ -174,41 +177,69 @@
 
                 if (editIndex === -1) {
                     inventory.push({ name, category, stock });
-                    addHistory(name, 'REGISTRADO (Entrada)', stock);
                 } else {
-                    const diff = stock - inventory[editIndex].stock;
                     inventory[editIndex] = { name, category, stock };
-                    if(diff !== 0) addHistory(name, diff > 0 ? 'AJUSTE (+) Entrada' : 'AJUSTE (-) Salida', Math.abs(diff));
                     document.getElementById('editIndex').value = -1;
+                    document.getElementById('btnSave').innerText = 'Guardar Producto';
                 }
-                saveAndReload();
+                
+                saveData();
                 this.reset();
             });
-            document.getElementById('searchInput').addEventListener('input', e => renderInventory(e.target.value.toLowerCase()));
+
+            document.getElementById('searchInput').addEventListener('input', e => {
+                renderInventory(e.target.value.toLowerCase());
+            });
         });
 
-        function saveAndReload() {
+        function saveData() {
             localStorage.setItem('inv_victoria_data', JSON.stringify(inventory));
             localStorage.setItem('inv_victoria_history', JSON.stringify(historyLog));
+            renderAll();
+        }
+
+        function renderAll() {
+            renderSummary();
             renderInventory();
             renderHistory();
         }
-        function addHistory(product, type, qty) {
-            historyLog.unshift({ date: new Date().toLocaleString(), product, type, qty });
-            if(historyLog.length > 50) historyLog.pop();
+
+        function renderSummary() {
+            const container = document.getElementById('summaryContainer');
+            container.innerHTML = '';
+            
+            if (inventory.length === 0) {
+                container.innerHTML = '<span class="text-muted">No hay productos registrados en el sistema.</span>';
+                return;
+            }
+
+            inventory.forEach(item => {
+                container.innerHTML += `
+                    <div class="badge badge-stock p-2 border">
+                        <strong>${item.name}:</strong> ${item.stock} unidad(es)
+                    </div>`;
+            });
         }
+
         function renderInventory(filter = '') {
             const tbody = document.getElementById('inventoryTableBody');
             tbody.innerHTML = '';
+
+            if (inventory.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">No hay productos guardados.</td></tr>';
+                return;
+            }
+
             inventory.forEach((item, index) => {
                 if (item.name.toLowerCase().includes(filter) || item.category.toLowerCase().includes(filter)) {
                     tbody.innerHTML += `
                         <tr>
-                            <td>${item.name}</td>
+                            <td class="fw-bold">${item.name}</td>
                             <td><span class="badge bg-light text-dark border">${item.category}</span></td>
-                            <td class="fw-bold">${item.stock}</td>
+                            <td><span class="fs-6 fw-bold ${item.stock === 0 ? 'text-danger' : 'text-success'}">${item.stock}</span></td>
                             <td>
-                                <button class="btn btn-sm btn-outline-secondary me-1" onclick="openDispatch(${index})">Entregar (-)</button>
+                                <button class="btn btn-sm btn-outline-danger me-1" onclick="quickSubtract(${index})" title="Restar 1">-1 Rápido</button>
+                                <button class="btn btn-sm btn-outline-secondary me-1" onclick="openDispatch(${index})">Entregar a Alguien</button>
                                 <button class="btn btn-sm btn-outline-primary me-1" onclick="editProduct(${index})">Editar</button>
                                 <button class="btn btn-sm btn-outline-danger" onclick="deleteProduct(${index})">Eliminar</button>
                             </td>
@@ -216,38 +247,100 @@
                 }
             });
         }
+
         function renderHistory() {
             const tbody = document.getElementById('historyTableBody');
             tbody.innerHTML = '';
+
+            if (historyLog.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">Aún no se han realizado entregas.</td></tr>';
+                return;
+            }
+
             historyLog.forEach(h => {
-                tbody.innerHTML += <tr><td><small>${h.date}</small></td><td>${h.product}</td><td><span class="badge ${h.type.includes('Entrada')||h.type.includes('REGISTRADO')?'bg-success':'bg-warning text-dark'}">${h.type}</span></td><td>${h.qty}</td></tr>;
+                tbody.innerHTML += `
+                    <tr>
+                        <td><small>${h.date}</small></td>
+                        <td class="fw-bold text-capitalize">${h.person}</td>
+                        <td>${h.product}</td>
+                        <td><span class="badge bg-warning text-dark">-${h.qty}</span></td>
+                    </tr>`;
             });
         }
+
+        function quickSubtract(index) {
+            if (inventory[index].stock <= 0) {
+                alert('No hay stock disponible para restar.');
+                return;
+            }
+            inventory[index].stock -= 1;
+            
+            historyLog.unshift({
+                date: new Date().toLocaleString(),
+                person: 'Uso Directo / Descuento Rápido',
+                product: inventory[index].name,
+                qty: 1
+            });
+
+            saveData();
+        }
+
         function openDispatch(index) {
+            if (inventory[index].stock <= 0) {
+                alert('Este producto no tiene stock disponible.');
+                return;
+            }
             document.getElementById('dispatchIndex').value = index;
-            document.getElementById('dispatchProductName').innerText = Producto: ${inventory[index].name} (Stock: ${inventory[index].stock});
+            document.getElementById('dispatchProductName').innerText = ${inventory[index].name} (Disponible: ${inventory[index].stock});
+            document.getElementById('personName').value = '';
             document.getElementById('dispatchQty').value = 1;
+            
             activeModal = new bootstrap.Modal(document.getElementById('dispatchModal'));
             activeModal.show();
         }
+
         function confirmDispatch() {
             const index = parseInt(document.getElementById('dispatchIndex').value);
+            const person = document.getElementById('personName').value.trim();
             const qty = parseInt(document.getElementById('dispatchQty').value);
-            if (qty > inventory[index].stock) { alert('Stock insuficiente.'); return; }
+
+            if (!person) {
+                alert('Por favor ingrese el nombre de la persona que recibe.');
+                return;
+            }
+
+            if (qty > inventory[index].stock) {
+                alert('La cantidad ingresada supera el stock disponible.');
+                return;
+            }
+
             inventory[index].stock -= qty;
-            addHistory(inventory[index].name, 'ENTREGADO', qty);
+
+            historyLog.unshift({
+                date: new Date().toLocaleString(),
+                person: person,
+                product: inventory[index].name,
+                qty: qty
+            });
+
             if (activeModal) activeModal.hide();
-            saveAndReload();
+            saveData();
         }
+
         function editProduct(index) {
             document.getElementById('prodName').value = inventory[index].name;
             document.getElementById('prodCategory').value = inventory[index].category;
             document.getElementById('prodStock').value = inventory[index].stock;
             document.getElementById('editIndex').value = index;
+            document.getElementById('btnSave').innerText = 'Actualizar Producto';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
         function deleteProduct(index) {
-            if(confirm('¿Eliminar producto?')) { inventory.splice(index, 1); saveAndReload(); }
+            if (confirm('¿Está seguro de eliminar este producto del sistema?')) {
+                inventory.splice(index, 1);
+                saveData();
+            }
         }
     </script>
 </body>
