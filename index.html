@@ -1,184 +1,254 @@
+[9:40 p.m., 4/11/2026] Richell 💗: @"
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inversiones Bombonshopcolonial</title>
+    <title>Inventario - CEIN Victoria Gamus de Ghetea</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { 
-            background-color: #0b0b0b; 
-            color: #f3e5ab; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+        body { background-color: #fdfbf7; color: #4a453e; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .navbar, .card, .btn-primary { background-color: #f4efe6 !important; border-color: #e5dccb !important; color: #4a453e !important; }
+        .btn-custom { background-color: #d4c5b9; color: #fff; border: none; }
+        .btn-custom:hover { background-color: #bfaea1; color: #fff; }
+        .card { box-shadow: 0 4p…
+[9:52 p.m., 4/11/2026] Richell 💗: <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario - CEIN Victoria Gamus de Ghetea</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #fdfbf7;
+            color: #4a453e;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        .card { 
-            background-color: #1a1a1a; 
-            border-radius: 12px; 
-            border: 1px solid #d4af37; 
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15); 
+        .navbar, .card, .btn-primary {
+            background-color: #f4efe6 !important;
+            border-color: #e5dccb !important;
+            color: #4a453e !important;
         }
-        .btn-dorado { 
-            background-color: #d4af37; 
-            color: #000000; 
-            font-weight: bold; 
-            border-radius: 8px; 
+        .btn-custom {
+            background-color: #d4c5b9;
+            color: #fff;
             border: none;
         }
-        .btn-dorado:hover { 
-            background-color: #b38f27; 
-            color: #000000; 
-        }
-        .form-control {
-            background-color: #121212;
-            border: 1px solid #444;
+        .btn-custom:hover {
+            background-color: #bfaea1;
             color: #fff;
-            border-radius: 8px;
         }
-        .form-control:focus {
-            background-color: #121212;
-            border-color: #d4af37;
-            color: #fff;
-            box-shadow: 0 0 0 0.25rem rgba(212, 175, 55, 0.25);
+        .card {
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            border: 1px solid #e9e3d5;
         }
-        .form-control::placeholder {
-            color: #888;
-        }
-        .table {
-            color: #000000;
-            background-color: #1a1a1a;
-        }
-        .table-hover tbody tr:hover { 
-            background-color: #e5e5e5; 
-            color: #000000; 
-        }
-        .table thead {
-            background-color: #121212;
-            color: #000000;
-            border-bottom: 2px solid #d4af37;
-        }
-        .text-gold {
-            color: #d4af37 !important;
+        table {
+            background-color: #ffffff;
         }
     </style>
 </head>
-<body class="p-4">
-    <div class="container" style="max-width: 950px;">
-        <h2 class="mb-4 text-center fw-bold text-gold">✨ Inversiones Bombonshopcolonial ✨</h2>
-        
-        <!-- Buscador -->
-        <div class="card p-3 mb-4">
-            <input type="text" id="buscador" class="form-control" placeholder="🔍 Buscar producto por nombre...">
+<body>
+    <nav class="navbar navbar-light shadow-sm mb-4">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1 fw-bold text-secondary">CEIN Victoria Gamus de Ghetea</span>
+            <span class="text-muted small">Directora: Vilma Valencia</span>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        <div class="row mb-4">
+            <div class="col-md-12 text-center">
+                <h2>Sistema de Control de Inventario y Despachos</h2>
+                <p class="text-muted">Gestión de despachos, entradas y existencias de despensa</p>
+            </div>
         </div>
 
-        <!-- Registro de Productos -->
+        <!-- Formulario de Registro -->
         <div class="card p-4 mb-4">
-            <h5 class="fw-semibold mb-3 text-gold">Registrar / Agregar Producto</h5>
-            <form id="formProducto" class="row g-3">
-                <div class="col-md-5">
-                    <input type="text" id="nombreProducto" class="form-control" placeholder="Nombre del producto" required>
+            <h4 class="mb-3 text-secondary">Registrar / Agregar Producto</h4>
+            <form id="productForm" class="row g-3">
+                <input type="hidden" id="editIndex" value="-1">
+                <div class="col-md-4">
+                    <label for="prodName" class="form-label">Nombre del Producto</label>
+                    <input type="text" class="form-control" id="prodName" required>
                 </div>
                 <div class="col-md-3">
-                    <input type="number" id="cantidadProducto" class="form-control" placeholder="Cantidad inicial" min="1" required>
+                    <label for="prodCategory" class="form-label">Categoría</label>
+                    <input type="text" class="form-control" id="prodCategory" placeholder="Ej. Víveres, Limpieza" required>
                 </div>
                 <div class="col-md-2">
-                    <input type="number" id="precioProducto" class="form-control" placeholder="Precio ($)" step="0.01" min="0" required>
+                    <label for="prodStock" class="form-label">Cantidad Stock</label>
+                    <input type="number" class="form-control" id="prodStock" min="0" required>
                 </div>
-                <div class="col-md-2">
-                    <button type="submit" class="btn btn-dorado w-100 h-100">Agregar</button>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-custom w-100">Guardar Producto</button>
                 </div>
             </form>
         </div>
 
-        <!-- Lista de Inventario -->
-        <div class="card p-4">
-            <h5 class="fw-semibold mb-3 text-gold">Lista de Inventario</h5>
+        <!-- Búsqueda -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <input type="text" id="searchInput" class="form-control" placeholder="Buscar producto...">
+            </div>
+        </div>
+
+        <!-- Tabla de Inventario -->
+        <div class="card p-4 mb-4">
+            <h4 class="mb-3 text-secondary">Inventario Actual</h4>
             <div class="table-responsive">
                 <table class="table table-hover align-middle">
                     <thead>
                         <tr>
-                            <th class="text-dark">Producto</th>
-                            <th class="text-center text-dark">Precio Unitario</th>
-                            <th class="text-center text-dark">Stock Disponible</th>
-                            <th class="text-center text-dark">Acciones</th>
+                            <th>Producto</th>
+                            <th>Categoría</th>
+                            <th>Stock Disponible</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
-                    <tbody id="tablaInventario">
-                    </tbody>
+                    <tbody id="inventoryTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Historial -->
+        <div class="card p-4">
+            <h4 class="mb-3 text-secondary">Historial de Movimientos</h4>
+            <div class="table-responsive">
+                <table class="table table-sm align-middle">
+                    <thead>
+                        <tr>
+                            <th>Fecha / Hora</th>
+                            <th>Producto</th>
+                            <th>Tipo</th>
+                            <th>Cantidad</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTableBody"></tbody>
                 </table>
             </div>
         </div>
     </div>
 
+    <!-- Modal Salida -->
+    <div class="modal fade" id="dispatchModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content" style="background-color: #fdfbf7;">
+                <div class="modal-header">
+                    <h5 class="modal-title">Registrar Entrega / Salida</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="dispatchIndex">
+                    <p id="dispatchProductName" class="fw-bold"></p>
+                    <div class="mb-3">
+                        <label for="dispatchQty" class="form-label">Cantidad a Retirar</label>
+                        <input type="number" class="form-control" id="dispatchQty" min="1" value="1">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-custom" onclick="confirmDispatch()">Confirmar Salida</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        let inventario = JSON.parse(localStorage.getItem('inventarioBombonshop')) || [];
+        let inventory = JSON.parse(localStorage.getItem('inv_victoria_data')) || [];
+        let historyLog = JSON.parse(localStorage.getItem('inv_victoria_history')) || [];
+        let activeModal = null;
 
-        function guardarYRenderizar() {
-            localStorage.setItem('inventarioBombonshop', JSON.stringify(inventario));
-            renderTabla(inventario);
+        document.addEventListener('DOMContentLoaded', () => {
+            renderInventory();
+            renderHistory();
+            document.getElementById('productForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('prodName').value.trim();
+                const category = document.getElementById('prodCategory').value.trim();
+                const stock = parseInt(document.getElementById('prodStock').value);
+                const editIndex = parseInt(document.getElementById('editIndex').value);
+
+                if (editIndex === -1) {
+                    inventory.push({ name, category, stock });
+                    addHistory(name, 'REGISTRADO (Entrada)', stock);
+                } else {
+                    const diff = stock - inventory[editIndex].stock;
+                    inventory[editIndex] = { name, category, stock };
+                    if(diff !== 0) addHistory(name, diff > 0 ? 'AJUSTE (+) Entrada' : 'AJUSTE (-) Salida', Math.abs(diff));
+                    document.getElementById('editIndex').value = -1;
+                }
+                saveAndReload();
+                this.reset();
+            });
+            document.getElementById('searchInput').addEventListener('input', e => renderInventory(e.target.value.toLowerCase()));
+        });
+
+        function saveAndReload() {
+            localStorage.setItem('inv_victoria_data', JSON.stringify(inventory));
+            localStorage.setItem('inv_victoria_history', JSON.stringify(historyLog));
+            renderInventory();
+            renderHistory();
         }
-
-        function renderTabla(datos) {
-            const tabla = document.getElementById('tablaInventario');
-            tabla.innerHTML = '';
-            
-            if (datos.length === 0) {
-                tabla.innerHTML = '<tr><td colspan="4" class="text-center text-muted py-3">No hay productos registrados.</td></tr>';
-                return;
-            }
-
-            datos.forEach((item) => {
-                const indexOriginal = inventario.indexOf(item);
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td class="fw-bold text-dark">${item.nombre}</td>
-                    <td class="text-center text-dark fw-bold">$${parseFloat(item.precio).toFixed(2)}</td>
-                    <td class="text-center"><span class="badge ${item.cantidad > 0 ? 'bg-success text-white' : 'bg-danger text-white'} fs-6">${item.cantidad} unidades</span></td>
-                    <td class="text-center">
-                        <button class="btn btn-sm btn-outline-warning me-2 text-dark border-dark fw-bold" onclick="vender(${indexOriginal})">🛒 Venta (-1)</button>
-                        <button class="btn btn-sm btn-outline-danger fw-bold" onclick="eliminar(${indexOriginal})">🗑️ Eliminar</button>
-                    </td>
-                `;
-                tabla.appendChild(tr);
+        function addHistory(product, type, qty) {
+            historyLog.unshift({ date: new Date().toLocaleString(), product, type, qty });
+            if(historyLog.length > 50) historyLog.pop();
+        }
+        function renderInventory(filter = '') {
+            const tbody = document.getElementById('inventoryTableBody');
+            tbody.innerHTML = '';
+            inventory.forEach((item, index) => {
+                if (item.name.toLowerCase().includes(filter) || item.category.toLowerCase().includes(filter)) {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${item.name}</td>
+                            <td><span class="badge bg-light text-dark border">${item.category}</span></td>
+                            <td class="fw-bold">${item.stock}</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-secondary me-1" onclick="openDispatch(${index})">Entregar (-)</button>
+                                <button class="btn btn-sm btn-outline-primary me-1" onclick="editProduct(${index})">Editar</button>
+                                <button class="btn btn-sm btn-outline-danger" onclick="deleteProduct(${index})">Eliminar</button>
+                            </td>
+                        </tr>`;
+                }
             });
         }
-
-        document.getElementById('formProducto').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const nombre = document.getElementById('nombreProducto').value.trim();
-            const cantidad = parseInt(document.getElementById('cantidadProducto').value);
-            const precio = parseFloat(document.getElementById('precioProducto').value);
-            
-            inventario.push({ nombre, cantidad, precio });
-            document.getElementById('nombreProducto').value = '';
-            document.getElementById('cantidadProducto').value = '';
-            document.getElementById('precioProducto').value = '';
-            guardarYRenderizar();
-            document.getElementById('buscador').value = '';
-        });
-
-        document.getElementById('buscador').addEventListener('input', (e) => {
-            const texto = e.target.value.toLowerCase();
-            const filtrados = inventario.filter(item => item.nombre.toLowerCase().includes(texto));
-            renderTabla(filtrados);
-        });
-
-        function vender(index) {
-            if (inventario[index].cantidad > 0) {
-                inventario[index].cantidad--;
-                guardarYRenderizar();
-                document.getElementById('buscador').dispatchEvent(new Event('input'));
-            } else {
-                alert('¡Atención! Este producto se ha agotado.');
-            }
+        function renderHistory() {
+            const tbody = document.getElementById('historyTableBody');
+            tbody.innerHTML = '';
+            historyLog.forEach(h => {
+                tbody.innerHTML += <tr><td><small>${h.date}</small></td><td>${h.product}</td><td><span class="badge ${h.type.includes('Entrada')||h.type.includes('REGISTRADO')?'bg-success':'bg-warning text-dark'}">${h.type}</span></td><td>${h.qty}</td></tr>;
+            });
         }
-
-        function eliminar(index) {
-            inventario.splice(index, 1);
-            guardarYRenderizar();
-            document.getElementById('buscador').dispatchEvent(new Event('input'));
+        function openDispatch(index) {
+            document.getElementById('dispatchIndex').value = index;
+            document.getElementById('dispatchProductName').innerText = Producto: ${inventory[index].name} (Stock: ${inventory[index].stock});
+            document.getElementById('dispatchQty').value = 1;
+            activeModal = new bootstrap.Modal(document.getElementById('dispatchModal'));
+            activeModal.show();
         }
-
-        guardarYRenderizar();
+        function confirmDispatch() {
+            const index = parseInt(document.getElementById('dispatchIndex').value);
+            const qty = parseInt(document.getElementById('dispatchQty').value);
+            if (qty > inventory[index].stock) { alert('Stock insuficiente.'); return; }
+            inventory[index].stock -= qty;
+            addHistory(inventory[index].name, 'ENTREGADO', qty);
+            if (activeModal) activeModal.hide();
+            saveAndReload();
+        }
+        function editProduct(index) {
+            document.getElementById('prodName').value = inventory[index].name;
+            document.getElementById('prodCategory').value = inventory[index].category;
+            document.getElementById('prodStock').value = inventory[index].stock;
+            document.getElementById('editIndex').value = index;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        function deleteProduct(index) {
+            if(confirm('¿Eliminar producto?')) { inventory.splice(index, 1); saveAndReload(); }
+        }
     </script>
 </body>
 </html>
