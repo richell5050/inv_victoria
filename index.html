@@ -1,27 +1,4 @@
-[9:02 p.m., 4/11/2026] Richell 💗: @'
 <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inversiones Bombonshopcolonial</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body { 
-            background-color: #0b0b0b; 
-            color: #f3e5ab; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-        }
-        .card { 
-            background-color: #1a1a1a; 
-            border-radius: 12px; 
-            border: 1px solid #d4af37; 
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15); 
-        }
-        .btn-dorado { 
-            background-color: #d4af37; 
-            color:…
-[10:32 p.m., 4/11/2026] Richell 💗: <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -31,96 +8,92 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #fdfbf7;
+            background-color: #ffffff !important;
             color: #000000 !important;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            font-weight: 500;
         }
-        .navbar, .card {
-            background-color: #f4efe6 !important;
-            border-color: #d8cebc !important;
-            color: #000000 !important;
+        .navbar {
+            background-color: #ffffff !important;
+            border-bottom: 2px solid #000000 !important;
         }
-        .btn-custom {
-            background-color: #d4c5b9;
-            color: #000000 !important;
-            border: 1px solid #bfaea1;
-            font-weight: bold;
-        }
-        .btn-custom:hover {
-            background-color: #bfaea1;
-            color: #000000 !important;
+        .card {
+            background-color: #ffffff !important;
+            border: 2px solid #000000 !important;
+            box-shadow: none !important;
         }
         h1, h2, h3, h4, h5, h6, label, p, span, th, td, a, .text-muted {
             color: #000000 !important;
         }
-        .card {
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            border: 1px solid #d8cebc;
+        .btn-custom {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+            border: 2px solid #000000 !important;
+            font-weight: bold;
+        }
+        .btn-custom:hover {
+            background-color: #333333 !important;
+            color: #ffffff !important;
+        }
+        .form-control {
+            background-color: #ffffff !important;
+            color: #000000 !important;
+            border: 2px solid #000000 !important;
+        }
+        .form-control::placeholder {
+            color: #666666 !important;
         }
         table {
             background-color: #ffffff !important;
             color: #000000 !important;
         }
-        .form-control {
-            color: #000000 !important;
-            border-color: #bfaea1;
-            font-weight: 500;
-        }
-        .form-control::placeholder {
-            color: #555555 !important;
-        }
-        .badge {
-            color: #000000 !important;
-            font-size: 0.95rem;
-            border: 1px solid #000000;
+        .table-bordered, .table-bordered th, .table-bordered td {
+            border-color: #000000 !important;
         }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-light shadow-sm mb-4">
+    <nav class="navbar navbar-light mb-4 py-3">
         <div class="container-fluid">
-            <span class="navbar-brand mb-0 h1 fw-bold">CEIN Victoria Gamus de Ghetea</span>
-            <span class="small fw-bold">Directora: Vilma Valencia</span>
+            <span class="navbar-brand mb-0 h1 fw-bold fs-3">CEIN Victoria Gamus de Ghetea</span>
+            <span class="fw-bold fs-5">Directora: Vilma Valencia</span>
         </div>
     </nav>
 
     <div class="container my-4">
         <div class="row mb-4">
             <div class="col-md-12 text-center">
-                <h2>Sistema de Control de Inventario</h2>
-                <p class="fw-bold">Gestión de productos y control de existencias</p>
+                <h2 class="fw-bold">Control de Inventario</h2>
             </div>
         </div>
 
-        <!-- 1. FORMULARIO PARA AGREGAR PRODUCTOS -->
+        <!-- FORMULARIO PARA AGREGAR -->
         <div class="card p-4 mb-4">
-            <h4 class="mb-3 fw-bold">➕ Agregar Producto al Sistema</h4>
+            <h4 class="mb-3 fw-bold">Agregar Producto</h4>
             <form id="addForm" class="row g-3">
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <label class="form-label fw-bold">Nombre del Producto</label>
-                    <input type="text" class="form-control" id="addName" placeholder="Ej. Jabón, Cloro, Harina" required>
+                    <input type="text" class="form-control" id="addName" placeholder="Ej. Jabón" required>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label fw-bold">Cantidad Inicial</label>
+                    <label class="form-label fw-bold">Cantidad</label>
                     <input type="number" class="form-control" id="addQty" min="1" value="1" required>
                 </div>
-                <div class="col-md-4 d-flex align-items-end">
-                    <button type="submit" class="btn btn-custom w-100">Guardar Producto</button>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-custom w-100 py-2">Agregar</button>
                 </div>
             </form>
         </div>
 
-        <!-- 2. APARTADO: PRODUCTOS QUE TENGO -->
-        <div class="card p-4 mb-4">
-            <h4 class="mb-3 fw-bold">📦 Productos que Tengo en el Sistema</h4>
+        <!-- LISTA PRINCIPAL DE PRODUCTOS CON BOTÓN DE MENOS Y ELIMINAR -->
+        <div class="card p-4">
+            <h4 class="mb-3 fw-bold">Lista de Productos Disponibles</h4>
             <div class="table-responsive">
-                <table class="table table-hover align-middle border">
+                <table class="table table-bordered align-middle">
                     <thead>
                         <tr>
-                            <th class="fw-bold">Nombre del Producto</th>
-                            <th class="fw-bold">Cantidad Actual (Quedan)</th>
-                            <th class="fw-bold">Acciones</th>
+                            <th class="fw-bold fs-5">Producto</th>
+                            <th class="fw-bold fs-5">Cantidad (Quedan)</th>
+                            <th class="fw-bold fs-5 text-center">Acciones</th>
                         </tr>
                     </thead>
                     <tbody id="inventoryTable">
@@ -129,84 +102,14 @@
                 </table>
             </div>
         </div>
-
-        <!-- 3. APARTADO: RECTIFICAR Y REGISTRAR SALIDAS -->
-        <div class="card p-4 mb-4">
-            <h4 class="mb-3 fw-bold">🔍 Rectificar y Descontar (Salidas a Personas)</h4>
-            <p class="fw-bold small">Usa este apartado cuando entregues un producto para registrar quién se lo llevó y descontarlo:</p>
-            <div class="table-responsive">
-                <table class="table table-bordered align-middle bg-white">
-                    <thead>
-                        <tr>
-                            <th class="fw-bold">Producto</th>
-                            <th class="fw-bold">Disponible</th>
-                            <th class="fw-bold">Registrar Entrega</th>
-                        </tr>
-                    </thead>
-                    <tbody id="rectifyTable">
-                        <!-- Se llena automáticamente -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- 4. APARTADO: HISTORIAL -->
-        <div class="card p-4">
-            <h4 class="mb-3 fw-bold">📝 Historial de Personas que Retiraron Productos</h4>
-            <div class="table-responsive">
-                <table class="table table-striped align-middle border">
-                    <thead>
-                        <tr>
-                            <th class="fw-bold">Fecha y Hora</th>
-                            <th class="fw-bold">Persona que se lo llevó</th>
-                            <th class="fw-bold">Producto</th>
-                            <th class="fw-bold">Cantidad Entregada</th>
-                        </tr>
-                    </thead>
-                    <tbody id="historyTable">
-                        <!-- Se llena automáticamente -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="deliverModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content" style="background-color: #fdfbf7;">
-                <div class="modal-header">
-                    <h5 class="modal-title fw-bold">Registrar Entrega</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" id="deliverIndex">
-                    <p id="deliverProductTitle" class="fw-bold"></p>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Nombre de la persona que recibe:</label>
-                        <input type="text" class="form-control" id="personNameInput" placeholder="Nombre completo" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Cantidad a restar:</label>
-                        <input type="number" class="form-control" id="deliverQtyInput" min="1" value="1" required>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary fw-bold" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-custom" onclick="confirmDelivery()">Confirmar Entrega</button>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        let inventory = JSON.parse(localStorage.getItem('victoria_inventario_v3')) || [];
-        let historyList = JSON.parse(localStorage.getItem('victoria_historial_v3')) || [];
-        let modalInstance = null;
+        let inventory = JSON.parse(localStorage.getItem('victoria_inv_simple')) || [];
 
         document.addEventListener('DOMContentLoaded', () => {
-            renderAll();
+            renderInventory();
 
             document.getElementById('addForm').addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -228,118 +131,41 @@
         });
 
         function saveAndRefresh() {
-            localStorage.setItem('victoria_inventario_v3', JSON.stringify(inventory));
-            localStorage.setItem('victoria_historial_v3', JSON.stringify(historyList));
-            renderAll();
-        }
-
-        function renderAll() {
+            localStorage.setItem('victoria_inv_simple', JSON.stringify(inventory));
             renderInventory();
-            renderRectify();
-            renderHistory();
         }
 
         function renderInventory() {
             const tbody = document.getElementById('inventoryTable');
             tbody.innerHTML = '';
             if (inventory.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="3" class="text-center fw-bold">No hay productos registrados todavía.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="3" class="text-center fw-bold py-4">No hay productos en la lista.</td></tr>';
                 return;
             }
             inventory.forEach((item, index) => {
                 tbody.innerHTML += `
                     <tr>
-                        <td class="fw-bold">${item.name}</td>
-                        <td class="fw-bold fs-5">${item.stock} unidades</td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-dark fw-bold" onclick="deleteProduct(${index})">Eliminar</button>
+                        <td class="fw-bold fs-5">${item.name}</td>
+                        <td class="fw-bold fs-5 text-success">${item.stock}</td>
+                        <td class="text-center">
+                            <button class="btn btn-warning btn-sm fw-bold px-3 me-2" onclick="subtractOne(${index})">Restar (-1)</button>
+                            <button class="btn btn-danger btn-sm fw-bold px-3" onclick="deleteProduct(${index})">Eliminar</button>
                         </td>
                     </tr>`;
             });
         }
 
-        function renderRectify() {
-            const tbody = document.getElementById('rectifyTable');
-            tbody.innerHTML = '';
-            if (inventory.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="3" class="text-center fw-bold">Agrega un producto primero.</td></tr>';
-                return;
+        function subtractOne(index) {
+            if (inventory[index].stock > 0) {
+                inventory[index].stock -= 1;
+                saveAndRefresh();
+            } else {
+                alert('Ya no quedan unidades de este producto.');
             }
-            inventory.forEach((item, index) => {
-                tbody.innerHTML += `
-                    <tr>
-                        <td class="fw-bold">${item.name}</td>
-                        <td class="fw-bold">${item.stock} disponibles</td>
-                        <td>
-                            <button class="btn btn-sm btn-custom" onclick="openDeliverModal(${index})">Entregar / Restar (-)</button>
-                        </td>
-                    </tr>`;
-            });
-        }
-
-        function renderHistory() {
-            const tbody = document.getElementById('historyTable');
-            tbody.innerHTML = '';
-            if (historyList.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" class="text-center fw-bold">Aún no se ha registrado ninguna entrega.</td></tr>';
-                return;
-            }
-            historyList.forEach(h => {
-                tbody.innerHTML += `
-                    <tr>
-                        <td class="fw-bold"><small>${h.date}</small></td>
-                        <td class="fw-bold">${h.person}</td>
-                        <td class="fw-bold">${h.product}</td>
-                        <td class="fw-bold">-${h.qty}</td>
-                    </tr>`;
-            });
-        }
-
-        function openDeliverModal(index) {
-            const item = inventory[index];
-            if (item.stock <= 0) {
-                alert('No hay stock disponible de este producto.');
-                return;
-            }
-            document.getElementById('deliverIndex').value = index;
-            document.getElementById('deliverProductTitle').innerText = Producto: ${item.name} (Quedan: ${item.stock});
-            document.getElementById('personNameInput').value = '';
-            document.getElementById('deliverQtyInput').value = 1;
-            document.getElementById('deliverQtyInput').max = item.stock;
-
-            modalInstance = new bootstrap.Modal(document.getElementById('deliverModal'));
-            modalInstance.show();
-        }
-
-        function confirmDelivery() {
-            const index = parseInt(document.getElementById('deliverIndex').value);
-            const person = document.getElementById('personNameInput').value.trim();
-            const qty = parseInt(document.getElementById('deliverQtyInput').value);
-
-            if (!person) {
-                alert('Escribe el nombre de la persona.');
-                return;
-            }
-            if (qty > inventory[index].stock) {
-                alert('No puedes entregar más de lo que hay en stock.');
-                return;
-            }
-
-            inventory[index].stock -= qty;
-
-            historyList.unshift({
-                date: new Date().toLocaleString(),
-                person: person,
-                product: inventory[index].name,
-                qty: qty
-            });
-
-            if (modalInstance) modalInstance.hide();
-            saveAndRefresh();
         }
 
         function deleteProduct(index) {
-            if (confirm('¿Deseas eliminar este producto de la lista?')) {
+            if (confirm('¿Eliminar este producto?')) {
                 inventory.splice(index, 1);
                 saveAndRefresh();
             }
